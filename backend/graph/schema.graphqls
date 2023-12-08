@@ -1,28 +1,67 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+type User{
+  userID: ID!
+  username: String!
+  email: String!
+  firstname: String!
+  lastname: String!
+  birthday: Int!
+  results: [Result!]!
 }
 
-type User {
-  id: ID!
-  name: String!
+type Result {
+  resultID: ID!
+  competitionName: String!
+  category: Int!
+  numberOfCompetitors: Int!
+  place: Int!
+  competitionRank: Float!
+  date: Int!
+  massCoefficient: Float!
+  medal: Int!
+  record: Int!
+  points: Float!
 }
 
-type Query {
-  todos: [Todo!]!
+input NewUser {
+  username: String!
+  email: String!
+  password: String!
+  firstname: String!
+  lastname: String!
+  birthday: Int!
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+
+input NewResult {
+  competitionName: String!
+  category: Int!
+  numberOfCompetitiors: Int!
+  place: Int!
+  competitionRank: Float!
+  date: Int!
+  medal: Int!
+  record: Int!
 }
 
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+input UpdatePassword{
+  username: String
+  password: String!
+}
+
+input Login {
+  username: String!
+  password: String!
+}
+
+type Query{  
+  user(numberOfResults: Int): User!
+}
+
+type Mutation{
+  createUser(input: NewUser!): String!
+  createResult(input: NewResult!): Result!
+  login(input: Login!): String!
+  updatePassword(input: UpdatePassword!): Boolean!
+  updateUser(input: NewUser!): Boolean!
+  updateResult(input: NewResult!): Boolean!
 }

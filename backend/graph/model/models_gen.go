@@ -2,19 +2,56 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type Login struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type NewResult struct {
+	CompetitionName      string  `json:"competitionName"`
+	Category             int     `json:"category"`
+	NumberOfCompetitiors int     `json:"numberOfCompetitiors"`
+	Place                int     `json:"place"`
+	CompetitionRank      float64 `json:"competitionRank"`
+	Date                 int     `json:"date"`
+	Medal                int     `json:"medal"`
+	Record               int     `json:"record"`
+}
+
+type NewUser struct {
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+	Birthday  int    `json:"birthday"`
+}
+
+type Result struct {
+	ResultID            string  `json:"resultID"`
+	CompetitionName     string  `json:"competitionName"`
+	Category            int     `json:"category"`
+	NumberOfCompetitors int     `json:"numberOfCompetitors"`
+	Place               int     `json:"place"`
+	CompetitionRank     float64 `json:"competitionRank"`
+	Date                int     `json:"date"`
+	MassCoefficient     float64 `json:"massCoefficient"`
+	Medal               int     `json:"medal"`
+	Record              int     `json:"record"`
+	Points              float64 `json:"points"`
+}
+
+type UpdatePassword struct {
+	Username *string `json:"username,omitempty"`
+	Password string  `json:"password"`
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	UserID    string    `json:"userID"`
+	Username  string    `json:"username"`
+	Email     string    `json:"email"`
+	Firstname string    `json:"firstname"`
+	Lastname  string    `json:"lastname"`
+	Birthday  int       `json:"birthday"`
+	Results   []*Result `json:"results"`
 }
