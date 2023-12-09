@@ -25,7 +25,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 	}
 	var graphqlResults []*model.Result
 	for res.Next() {
-		var tmpResult results.Results
+		var tmpResult results.Result
 		err := res.Scan(&tmpResult.ResultID, &tmpResult.UserID, &tmpResult.CompetitionName, &tmpResult.Category, &tmpResult.NumberOfCompetitors, &tmpResult.Place, &tmpResult.CompetitionRank,
 			&tmpResult.Date, &tmpResult.MassCoefficinet, &tmpResult.Medal, &tmpResult.Record, &tmpResult.Points)
 		if err != nil {
@@ -40,7 +40,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 			NumberOfCompetitors: tmpResult.NumberOfCompetitors,
 			Place:               tmpResult.Place,
 			CompetitionRank:     tmpResult.CompetitionRank,
-			Date:                tmpResult.Date,
+			Date:                int(tmpResult.Date),
 			MassCoefficient:     tmpResult.MassCoefficinet,
 			Medal:               tmpResult.Medal,
 			Record:              tmpResult.Record,

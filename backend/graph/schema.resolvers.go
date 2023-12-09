@@ -17,7 +17,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 
 // CreateResult is the resolver for the createResult field.
 func (r *mutationResolver) CreateResult(ctx context.Context, input model.NewResult) (*model.Result, error) {
-	return graphqlHandlers.CreateResult(ctx, input)
+	return graphqlHandlers.CreateResult("test5",input)
 }
 
 // Login is the resolver for the login field.

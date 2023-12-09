@@ -34,7 +34,6 @@ func playgroundHandler() gin.HandlerFunc {
 }
 
 func main() {
-
 	r := gin.Default()
 	database.InitDB()
 	defer database.CloseDB()

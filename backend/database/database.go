@@ -27,24 +27,31 @@ func CloseDB() error {
 	return DB.Close()
 }
 
-func GetLastInsertedIDFromUsers() (int, error){
+func GetLastInsertedIDFromUsers() (int, error) {
 	var id int
 	row := DB.QueryRow("select rowid from users order by rowid desc limit 1;")
 	err := row.Scan(&id)
-	if err != nil{
-		log.Println(err)
+	if err != nil {
 		return -1, err
 	}
 	return id, nil
 }
 
-func GetLastInsertedIDFromResults() (int, error){
+func GetLastInsertedIDFromResults() (int, error) {
 	var id int
 	row := DB.QueryRow("select rowid from results order by rowid desc limit 1;")
 	err := row.Scan(&id)
-	if err != nil{
-		log.Println(err)
+	if err != nil {
 		return -1, err
+	}
+	return id, nil
+}
+func GetUserIDFromUsername(username string) (int, error) {
+	var id int
+	row := DB.QueryRow("select user_id from users where username=?;",username)
+	err := row.Scan(&id)
+	if err != nil{
+		return -1,err
 	}
 	return id, nil
 }
