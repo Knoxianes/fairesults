@@ -12,7 +12,7 @@ import (
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
-	return graphqlHandlers.CreateUser(ctx, input)
+	return graphqlHandlers.CreateUser( input)
 }
 
 // CreateResult is the resolver for the createResult field.

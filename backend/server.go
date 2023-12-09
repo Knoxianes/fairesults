@@ -3,6 +3,7 @@ package main
 import (
 	"Knoxiaes/fairesults/database"
 	"Knoxiaes/fairesults/graph"
+	verifyHandler "Knoxiaes/fairesults/handlers/verify"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
@@ -39,5 +40,6 @@ func main() {
 	defer database.CloseDB()
 	r.POST("/query", graphqlHandler())
 	r.GET("/", playgroundHandler())
+	r.GET("/verify/:token", verifyHandler.GET)
 	r.Run()
 }

@@ -17,7 +17,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 
 	} else {
 
-		res,err = database.DB.Query("select * from results where user_id=? order by points desc limit ?;", userID,numberOfResults)
+		res, err = database.DB.Query("select * from results where user_id=? order by points desc limit ?;", userID, numberOfResults)
 	}
 	if err != nil {
 		log.Println(err)
