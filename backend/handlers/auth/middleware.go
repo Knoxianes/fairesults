@@ -13,7 +13,7 @@ var userCtxKey = &contextKey{"user"}
 type contextKey struct {
 	name string
 }
-var allowedPaths = ["login", "signup","verfiy","query"]
+var allowedPaths = []string{"login", "signup","verfiy","query"}
 		
 
 
@@ -22,7 +22,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		fullPath := c.Request.URL.Path
 		splitedPath := strings.Split(fullPath,"/")[1]
-		if  
+	 
 
 		tokenString, err := c.Cookie("jwt_token")
 
