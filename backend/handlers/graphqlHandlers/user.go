@@ -4,8 +4,8 @@ import (
 	"Knoxiaes/fairesults/database"
 	"Knoxiaes/fairesults/database/users"
 	"Knoxiaes/fairesults/graph/model"
+	"Knoxiaes/fairesults/helpers"
 	"log"
-	"strconv"
 )
 
 func User(userID int, numberOfResults int) (*model.User, error) {
@@ -15,16 +15,15 @@ func User(userID int, numberOfResults int) (*model.User, error) {
 	err := res.Scan(&tmpUser.UserID, &tmpUser.Username, &tmpUser.Email, &tmpUser.Firstname, &tmpUser.Lastname, &tmpUser.Birthday)
 	if err != nil {
 		log.Println(err)
-		return &model.User{}, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
-	graphqlUserID := strconv.Itoa(tmpUser.UserID)
-	graphqlResults, err := Results(userID, 0)
+	graphqlResults, err := Results(userID, numberOfResults)
 	if err != nil {
 		log.Println(err)
-		return &model.User{}, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	return &model.User{
-		UserID:    graphqlUserID,
+		UserID:    tmpUser.UserID,
 		Username:  tmpUser.Username,
 		Email:     tmpUser.Email,
 		Firstname: tmpUser.Firstname,

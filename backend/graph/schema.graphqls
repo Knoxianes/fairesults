@@ -1,5 +1,5 @@
 type User{
-  userID: ID!
+  userID: Int!
   username: String!
   email: String!
   firstname: String!
@@ -9,7 +9,7 @@ type User{
 }
 
 type Result {
-  resultID: ID!
+  resultID: Int!
   competitionName: String!
   category: Int!
   numberOfCompetitors: Int!
@@ -42,10 +42,23 @@ input NewResult {
   medal: Int!
   record: Int!
 }
+input UpdatedResult {
+  resultID: Int!
+  competitionName: String!
+  category: Int!
+  numberOfCompetitors: Int!
+  place: Int!
+  competitionRank: Float!
+  date: Int!
+  massCoefficient: Float!
+  medal: Int!
+  record: Int!
+  points: Float!
+}
 
 input UpdatePassword{
-  username: String
-  password: String!
+  oldPassword: String
+  newPassword: String!
 }
 
 input Login {
@@ -58,10 +71,10 @@ type Query{
 }
 
 type Mutation{
-  createUser(input: NewUser!): String!
+  createUser(input: NewUser!): Int!
   createResult(input: NewResult!): Result!
   login(input: Login!): String!
   updatePassword(input: UpdatePassword!): Boolean!
   updateUser(input: NewUser!): Boolean!
-  updateResult(input: NewResult!): Boolean!
+  updateResult(input: UpdatedResult!): Boolean!
 }

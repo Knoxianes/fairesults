@@ -6,46 +6,57 @@ package graph
 
 import (
 	"Knoxiaes/fairesults/graph/model"
+	gincontext "Knoxiaes/fairesults/handlers/ginContext"
 	"Knoxiaes/fairesults/handlers/graphqlHandlers"
+	"Knoxiaes/fairesults/helpers"
 	"context"
+	"log"
 )
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
-	return graphqlHandlers.CreateUser( input)
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (int, error) {
+	return graphqlHandlers.CreateUser(input)
 }
 
 // CreateResult is the resolver for the createResult field.
 func (r *mutationResolver) CreateResult(ctx context.Context, input model.NewResult) (*model.Result, error) {
-	return graphqlHandlers.CreateResult("test5",input)
+	return graphqlHandlers.CreateResult("test5", input)
 }
 
 // Login is the resolver for the login field.
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string, error) {
-	return graphqlHandlers.Login(ctx, input)
+	c, err := gincontext.GinContextFromContext(ctx)
+	if err != nil {
+		log.Println(err)
+		return "", helpers.CustomError{Message: err.Error(), Code: 0}
+	}
+	return graphqlHandlers.Login(c, input)
 }
 
 // UpdatePassword is the resolver for the updatePassword field.
 func (r *mutationResolver) UpdatePassword(ctx context.Context, input model.UpdatePassword) (bool, error) {
-	return graphqlHandlers.UpdatePassword(ctx, input)
+	if input.OldPassword == nil {
+		return graphqlHandlers.ResetPassword("test5", input.NewPassword)
+	}
+	return graphqlHandlers.UpdatePassword("test5", input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.NewUser) (bool, error) {
-	return graphqlHandlers.UpdateUser(ctx, input)
+	return graphqlHandlers.UpdateUser("test5", input)
 }
 
 // UpdateResult is the resolver for the updateResult field.
-func (r *mutationResolver) UpdateResult(ctx context.Context, input model.NewResult) (bool, error) {
-	return graphqlHandlers.UpdateResult(ctx, input)
+func (r *mutationResolver) UpdateResult(ctx context.Context, input model.UpdatedResult) (bool, error) {
+	return graphqlHandlers.UpdateResult("test5", input)
 }
 
 // User is the resolver for the User field.
 func (r *queryResolver) User(ctx context.Context, numberOfResults *int) (*model.User, error) {
-	if numberOfResults == nil{
-		return graphqlHandlers.User(1,0)
+	if numberOfResults == nil {
+		return graphqlHandlers.User(1, 0)
 	}
-	return graphqlHandlers.User(1,*numberOfResults)
+	return graphqlHandlers.User(1, *numberOfResults)
 }
 
 // Mutation returns MutationResolver implementation.

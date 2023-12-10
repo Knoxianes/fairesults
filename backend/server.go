@@ -3,6 +3,8 @@ package main
 import (
 	"Knoxiaes/fairesults/database"
 	"Knoxiaes/fairesults/graph"
+	"Knoxiaes/fairesults/handlers/auth"
+	gincontext "Knoxiaes/fairesults/handlers/ginContext"
 	verifyHandler "Knoxiaes/fairesults/handlers/verify"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -35,6 +37,8 @@ func playgroundHandler() gin.HandlerFunc {
 
 func main() {
 	r := gin.Default()
+	r.Use(gincontext.GinContextToContextMiddleware())
+	r.Use(auth.AuthMiddleware())
 	database.InitDB()
 	defer database.CloseDB()
 	r.POST("/query", graphqlHandler())

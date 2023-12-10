@@ -2,9 +2,8 @@ package graphqlHandlers
 
 import (
 	"Knoxiaes/fairesults/graph/model"
-	"context"
 )
 
-func UpdateResult(ctx context.Context, input model.NewResult) (bool, error) {
+func UpdateResult(username string, input model.UpdatedResult) (bool, error) {
 	return true, nil
 }

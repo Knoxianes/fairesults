@@ -4,9 +4,9 @@ import (
 	"Knoxiaes/fairesults/database"
 	"Knoxiaes/fairesults/database/results"
 	"Knoxiaes/fairesults/graph/model"
+	"Knoxiaes/fairesults/helpers"
 	"database/sql"
 	"log"
-	"strconv"
 )
 
 func Results(userID int, numberOfResults int) ([]*model.Result, error) {
@@ -21,7 +21,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 	}
 	if err != nil {
 		log.Println(err)
-		return []*model.Result{}, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	var graphqlResults []*model.Result
 	for res.Next() {
@@ -30,11 +30,10 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 			&tmpResult.Date, &tmpResult.MassCoefficinet, &tmpResult.Medal, &tmpResult.Record, &tmpResult.Points)
 		if err != nil {
 			log.Println(err)
-			return []*model.Result{}, err
+			return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 		}
-		graphqlResultID := strconv.Itoa(tmpResult.ResultID)
 		graphqlResults = append(graphqlResults, &model.Result{
-			ResultID:            graphqlResultID,
+			ResultID:            tmpResult.ResultID,
 			CompetitionName:     tmpResult.CompetitionName,
 			Category:            tmpResult.Category,
 			NumberOfCompetitors: tmpResult.NumberOfCompetitors,
@@ -50,7 +49,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 	}
 	if err := res.Err(); err != nil {
 		log.Println(err)
-		return []*model.Result{}, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	return graphqlResults, nil
 }

@@ -52,7 +52,7 @@ type ComplexityRoot struct {
 		CreateUser     func(childComplexity int, input model.NewUser) int
 		Login          func(childComplexity int, input model.Login) int
 		UpdatePassword func(childComplexity int, input model.UpdatePassword) int
-		UpdateResult   func(childComplexity int, input model.NewResult) int
+		UpdateResult   func(childComplexity int, input model.UpdatedResult) int
 		UpdateUser     func(childComplexity int, input model.NewUser) int
 	}
 
@@ -86,12 +86,12 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateUser(ctx context.Context, input model.NewUser) (string, error)
+	CreateUser(ctx context.Context, input model.NewUser) (int, error)
 	CreateResult(ctx context.Context, input model.NewResult) (*model.Result, error)
 	Login(ctx context.Context, input model.Login) (string, error)
 	UpdatePassword(ctx context.Context, input model.UpdatePassword) (bool, error)
 	UpdateUser(ctx context.Context, input model.NewUser) (bool, error)
-	UpdateResult(ctx context.Context, input model.NewResult) (bool, error)
+	UpdateResult(ctx context.Context, input model.UpdatedResult) (bool, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context, numberOfResults *int) (*model.User, error)
@@ -174,7 +174,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateResult(childComplexity, args["input"].(model.NewResult)), true
+		return e.complexity.Mutation.UpdateResult(childComplexity, args["input"].(model.UpdatedResult)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -338,6 +338,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputNewResult,
 		ec.unmarshalInputNewUser,
 		ec.unmarshalInputUpdatePassword,
+		ec.unmarshalInputUpdatedResult,
 	)
 	first := true
 
@@ -517,10 +518,10 @@ func (ec *executionContext) field_Mutation_updatePassword_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_updateResult_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 model.NewResult
+	var arg0 model.UpdatedResult
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewResult2KnoxiaesᚋfairesultsᚋgraphᚋmodelᚐNewResult(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdatedResult2KnoxiaesᚋfairesultsᚋgraphᚋmodelᚐUpdatedResult(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -638,9 +639,9 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -650,7 +651,7 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	defer func() {
@@ -925,7 +926,7 @@ func (ec *executionContext) _Mutation_updateResult(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateResult(rctx, fc.Args["input"].(model.NewResult))
+		return ec.resolvers.Mutation().UpdateResult(rctx, fc.Args["input"].(model.UpdatedResult))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1192,9 +1193,9 @@ func (ec *executionContext) _Result_resultID(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Result_resultID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1204,7 +1205,7 @@ func (ec *executionContext) fieldContext_Result_resultID(ctx context.Context, fi
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -1676,9 +1677,9 @@ func (ec *executionContext) _User_userID(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_userID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1688,7 +1689,7 @@ func (ec *executionContext) fieldContext_User_userID(ctx context.Context, field 
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3934,27 +3935,124 @@ func (ec *executionContext) unmarshalInputUpdatePassword(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"username", "password"}
+	fieldsInOrder := [...]string{"oldPassword", "newPassword"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "username":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("username"))
+		case "oldPassword":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldPassword"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Username = data
-		case "password":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("password"))
+			it.OldPassword = data
+		case "newPassword":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newPassword"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Password = data
+			it.NewPassword = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdatedResult(ctx context.Context, obj interface{}) (model.UpdatedResult, error) {
+	var it model.UpdatedResult
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"resultID", "competitionName", "category", "numberOfCompetitors", "place", "competitionRank", "date", "massCoefficient", "medal", "record", "points"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "resultID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("resultID"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ResultID = data
+		case "competitionName":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitionName"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitionName = data
+		case "category":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Category = data
+		case "numberOfCompetitors":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberOfCompetitors"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberOfCompetitors = data
+		case "place":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("place"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Place = data
+		case "competitionRank":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitionRank"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompetitionRank = data
+		case "date":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Date = data
+		case "massCoefficient":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("massCoefficient"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MassCoefficient = data
+		case "medal":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("medal"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Medal = data
+		case "record":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("record"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Record = data
+		case "points":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("points"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Points = data
 		}
 	}
 
@@ -4639,21 +4737,6 @@ func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.S
 	return graphql.WrapContextMarshaler(ctx, res)
 }
 
-func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
-	res, err := graphql.UnmarshalID(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalID(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
-}
-
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4759,6 +4842,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 
 func (ec *executionContext) unmarshalNUpdatePassword2KnoxiaesᚋfairesultsᚋgraphᚋmodelᚐUpdatePassword(ctx context.Context, v interface{}) (model.UpdatePassword, error) {
 	res, err := ec.unmarshalInputUpdatePassword(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpdatedResult2KnoxiaesᚋfairesultsᚋgraphᚋmodelᚐUpdatedResult(ctx context.Context, v interface{}) (model.UpdatedResult, error) {
+	res, err := ec.unmarshalInputUpdatedResult(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 

@@ -28,7 +28,7 @@ type NewUser struct {
 }
 
 type Result struct {
-	ResultID            string  `json:"resultID"`
+	ResultID            int     `json:"resultID"`
 	CompetitionName     string  `json:"competitionName"`
 	Category            int     `json:"category"`
 	NumberOfCompetitors int     `json:"numberOfCompetitors"`
@@ -42,12 +42,26 @@ type Result struct {
 }
 
 type UpdatePassword struct {
-	Username *string `json:"username,omitempty"`
-	Password string  `json:"password"`
+	OldPassword *string `json:"oldPassword,omitempty"`
+	NewPassword string  `json:"newPassword"`
+}
+
+type UpdatedResult struct {
+	ResultID            int     `json:"resultID"`
+	CompetitionName     string  `json:"competitionName"`
+	Category            int     `json:"category"`
+	NumberOfCompetitors int     `json:"numberOfCompetitors"`
+	Place               int     `json:"place"`
+	CompetitionRank     float64 `json:"competitionRank"`
+	Date                int     `json:"date"`
+	MassCoefficient     float64 `json:"massCoefficient"`
+	Medal               int     `json:"medal"`
+	Record              int     `json:"record"`
+	Points              float64 `json:"points"`
 }
 
 type User struct {
-	UserID    string    `json:"userID"`
+	UserID    int       `json:"userID"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
 	Firstname string    `json:"firstname"`

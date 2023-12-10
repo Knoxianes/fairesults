@@ -10,6 +10,7 @@ require (
 	github.com/libsql/libsql-client-go v0.0.0-20231128153229-cb5832f4404f
 	github.com/vektah/gqlparser/v2 v2.5.10
 	golang.org/x/crypto v0.16.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
 require (
@@ -53,7 +54,6 @@ require (
 	golang.org/x/tools v0.9.3 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
 )

@@ -4,8 +4,8 @@ import (
 	"Knoxiaes/fairesults/database"
 	"Knoxiaes/fairesults/database/results"
 	"Knoxiaes/fairesults/graph/model"
+	"Knoxiaes/fairesults/helpers"
 	"log"
-	"strconv"
 )
 
 func CreateResult(username string, input model.NewResult) (*model.Result, error) {
@@ -23,26 +23,25 @@ func CreateResult(username string, input model.NewResult) (*model.Result, error)
 	userID, err := database.GetUserIDFromUsername(username)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	_, err = database.DB.Query(`insert into results
 		(user_id,competition_name,category,number_competitors,competition_rank,place,date,mass_coefficient,medal,record,points)
 		values(?,?,?,?,?,?,?,?,?,?,?)`,
-		userID, result.CompetitionName, result.Category, result.NumberOfCompetitors,result.CompetitionRank, result.Place, result.Date, result.MassCoefficinet, result.Medal, result.Record, result.Points)
+		userID, result.CompetitionName, result.Category, result.NumberOfCompetitors, result.CompetitionRank, result.Place, result.Date, result.MassCoefficinet, result.Medal, result.Record, result.Points)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	resultID, err := database.GetLastInsertedIDFromResults()
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 
-	graphQLResultID := strconv.Itoa(resultID)
 
 	return &model.Result{
-		ResultID:            graphQLResultID,
+		ResultID:            resultID,
 		CompetitionName:     result.CompetitionName,
 		Category:            result.Category,
 		NumberOfCompetitors: result.NumberOfCompetitors,
