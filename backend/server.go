@@ -38,7 +38,7 @@ func playgroundHandler() gin.HandlerFunc {
 func main() {
 	r := gin.Default()
 	r.Use(gincontext.GinContextToContextMiddleware())
-	//	r.Use(auth.AuthMiddleware())
+	r.Use(auth.AuthMiddleware())
 	database.InitDB()
 	defer database.CloseDB()
 	r.POST("/query", graphqlHandler())

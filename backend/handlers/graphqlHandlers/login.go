@@ -6,7 +6,6 @@ import (
 	"Knoxiaes/fairesults/helpers"
 	"database/sql"
 	"log"
-	"os"
 	"time"
 	_"github.com/joho/godotenv/autoload"
 	"github.com/gin-gonic/gin"
@@ -37,6 +36,6 @@ func Login(c *gin.Context, input model.Login) (string, error) {
 		log.Println(err)
 		return "", helpers.CustomError{Message:err.Error(), Code:0}
 	}
-	c.SetCookie("jwt_token", token, 86400, "/",os.Getenv("DOMAIN"),false,false) // Remainder in production last two have to be true
+	c.SetCookie("jwt_token", token, 86400, "/","",false,false) // Remainder in production last two have to be true
 	return "", nil
 }

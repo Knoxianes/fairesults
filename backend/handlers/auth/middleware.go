@@ -15,43 +15,45 @@ var userCtxKey = &contextKey{"user"}
 type contextKey struct {
 	name string
 }
-var allowedPaths = []string{"login", "signup","verfiy"}
-var alwaysAllowed = []string{"assets","query"}
-		
 
+var allowedPaths = []string{"login", "signup", "verfiy"}
+var alwaysAllowed = []string{"assets", "query","/"}
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		fullPath := c.Request.URL.Path
-		splitedPath := strings.Split(fullPath,"/")[1]
+		splitedPath := strings.Split(fullPath, "/")[1]
+		if splitedPath == ""{
+			splitedPath = "/"
+		}
 
-		if slices.Contains(alwaysAllowed,splitedPath){
+		if slices.Contains(alwaysAllowed, splitedPath) {
 			c.Next()
 			return
 		}
 
 		tokenString, err := c.Cookie("jwt_token")
 
-		if slices.Contains(allowedPaths,splitedPath){
-			if tokenString == ""{
+		if slices.Contains(allowedPaths, splitedPath) {
+			if tokenString == "" {
 				c.Next()
 				return
-			}else{
-				c.Redirect(http.StatusSeeOther,"/results")
+			} else {
+				c.Redirect(http.StatusSeeOther, "/results")
 				return
 			}
 		}
 
 		// Allow unauthenticated users in
-		if err != nil{
+		if err != nil {
 			c.Redirect(http.StatusSeeOther, "/login")
 			return
 		}
 
-
 		username, err := helpers.ParseToken(tokenString)
 		if err != nil {
+			c.SetCookie("jwt_token", "", 0, "/","", false, false) // Remainder in production last two have to be true
 			c.Redirect(http.StatusSeeOther, "/login")
 			return
 		}
