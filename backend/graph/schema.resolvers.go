@@ -35,20 +35,53 @@ func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string
 
 // UpdatePassword is the resolver for the updatePassword field.
 func (r *mutationResolver) UpdatePassword(ctx context.Context, input model.UpdatePassword) (bool, error) {
-	if input.OldPassword == nil {
-		return graphqlHandlers.ResetPassword("test5", input.NewPassword)
+	c, err := gincontext.GinContextFromContext(ctx)
+	if err != nil {
+		log.Println(err)
+		return false, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
-	return graphqlHandlers.UpdatePassword("test5", input)
+
+	username, err := helpers.ParseTokenFromContext(c)
+	if err != nil {
+		return false, err
+	}
+
+	if input.OldPassword == nil {
+		return graphqlHandlers.ResetPassword(username, input.NewPassword)
+	}
+	return graphqlHandlers.UpdatePassword(username, input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.NewUser) (bool, error) {
-	return graphqlHandlers.UpdateUser("test5", input)
+	c, err := gincontext.GinContextFromContext(ctx)
+	if err != nil {
+		log.Println(err)
+		return false, helpers.CustomError{Message: err.Error(), Code: 0}
+	}
+
+
+	username, err := helpers.ParseTokenFromContext(c)
+	if err != nil {
+		return false, err
+	}
+	return graphqlHandlers.UpdateUser(username, input)
 }
 
 // UpdateResult is the resolver for the updateResult field.
 func (r *mutationResolver) UpdateResult(ctx context.Context, input model.UpdatedResult) (bool, error) {
-	return graphqlHandlers.UpdateResult("test5", input)
+	c, err := gincontext.GinContextFromContext(ctx)
+	if err != nil {
+		log.Println(err)
+		return false, helpers.CustomError{Message: err.Error(), Code: 0}
+	}
+
+
+	username, err := helpers.ParseTokenFromContext(c)
+	if err != nil {
+		return false, err
+	}
+	return graphqlHandlers.UpdateResult(username, input)
 }
 
 // User is the resolver for the User field.

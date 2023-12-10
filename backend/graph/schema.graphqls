@@ -44,6 +44,7 @@ input NewResult {
 }
 input UpdatedResult {
   resultID: Int!
+  userID: Int!
   competitionName: String!
   category: Int!
   numberOfCompetitors: Int!
@@ -57,6 +58,7 @@ input UpdatedResult {
 }
 
 input UpdatePassword{
+  username: String!
   oldPassword: String
   newPassword: String!
 }

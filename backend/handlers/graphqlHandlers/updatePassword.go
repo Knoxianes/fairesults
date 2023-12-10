@@ -5,9 +5,11 @@ import (
 	"Knoxiaes/fairesults/graph/model"
 	"Knoxiaes/fairesults/helpers"
 	"log"
+
 )
 
 func UpdatePassword(username string, input model.UpdatePassword) (bool, error) {
+
 	row := database.DB.QueryRow("select password from users where username = ?;", username)
 	var password string
 

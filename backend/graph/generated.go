@@ -3935,13 +3935,20 @@ func (ec *executionContext) unmarshalInputUpdatePassword(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"oldPassword", "newPassword"}
+	fieldsInOrder := [...]string{"username", "oldPassword", "newPassword"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "username":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("username"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Username = data
 		case "oldPassword":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldPassword"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -3969,7 +3976,7 @@ func (ec *executionContext) unmarshalInputUpdatedResult(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"resultID", "competitionName", "category", "numberOfCompetitors", "place", "competitionRank", "date", "massCoefficient", "medal", "record", "points"}
+	fieldsInOrder := [...]string{"resultID", "userID", "competitionName", "category", "numberOfCompetitors", "place", "competitionRank", "date", "massCoefficient", "medal", "record", "points"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3983,6 +3990,13 @@ func (ec *executionContext) unmarshalInputUpdatedResult(ctx context.Context, obj
 				return it, err
 			}
 			it.ResultID = data
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
 		case "competitionName":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("competitionName"))
 			data, err := ec.unmarshalNString2string(ctx, v)

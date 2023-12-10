@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -35,6 +36,15 @@ func ParseToken(tokenString string) (string, error) {
 	}
 }
 
-
-
-
+func ParseTokenFromContext(c *gin.Context) (string, error) {
+	tokenString, err := c.Cookie("jwt_token")
+	if err != nil || tokenString == "" {
+		return "", CustomError{Message: err.Error(), Code: 0}
+	}
+	username, err := ParseToken(tokenString)
+	if err != nil {
+		log.Println(err)
+		return "", CustomError{Message: err.Error(), Code: 6}
+	}
+	return username, nil
+}

@@ -42,12 +42,14 @@ type Result struct {
 }
 
 type UpdatePassword struct {
+	Username    string  `json:"username"`
 	OldPassword *string `json:"oldPassword,omitempty"`
 	NewPassword string  `json:"newPassword"`
 }
 
 type UpdatedResult struct {
 	ResultID            int     `json:"resultID"`
+	UserID              int     `json:"userID"`
 	CompetitionName     string  `json:"competitionName"`
 	Category            int     `json:"category"`
 	NumberOfCompetitors int     `json:"numberOfCompetitors"`
