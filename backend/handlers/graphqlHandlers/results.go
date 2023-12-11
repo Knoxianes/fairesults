@@ -49,7 +49,7 @@ func Results(userID int, numberOfResults int) ([]*model.Result, error) {
 	}
 	if err := res.Err(); err != nil {
 		log.Println(err)
-		return nil, helpers.CustomError{Message: err.Error(), Code: 0}
+		return []*model.Result{}, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 	return graphqlResults, nil
 }

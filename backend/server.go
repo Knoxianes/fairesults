@@ -10,6 +10,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,6 +38,9 @@ func playgroundHandler() gin.HandlerFunc {
 
 func main() {
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	r.Use(cors.New(config))
 	r.Use(gincontext.GinContextToContextMiddleware())
 	r.Use(auth.AuthMiddleware())
 	database.InitDB()

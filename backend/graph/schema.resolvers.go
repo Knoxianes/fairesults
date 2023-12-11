@@ -60,7 +60,6 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.NewUser) 
 		return false, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 
-
 	username, err := helpers.ParseTokenFromContext(c)
 	if err != nil {
 		return false, err
@@ -76,7 +75,6 @@ func (r *mutationResolver) UpdateResult(ctx context.Context, input model.Updated
 		return false, helpers.CustomError{Message: err.Error(), Code: 0}
 	}
 
-
 	username, err := helpers.ParseTokenFromContext(c)
 	if err != nil {
 		return false, err
@@ -87,9 +85,9 @@ func (r *mutationResolver) UpdateResult(ctx context.Context, input model.Updated
 // User is the resolver for the User field.
 func (r *queryResolver) User(ctx context.Context, numberOfResults *int) (*model.User, error) {
 	if numberOfResults == nil {
-		return graphqlHandlers.User(1, 0)
+		return graphqlHandlers.User("test5", 0)
 	}
-	return graphqlHandlers.User(1, *numberOfResults)
+	return graphqlHandlers.User("test5", *numberOfResults)
 }
 
 // Mutation returns MutationResolver implementation.
